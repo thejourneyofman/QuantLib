@@ -32,7 +32,12 @@
 namespace QuantLib {
 
     //! Interest-rate single factor model differential operator
-    /*! \ingroup findiff */
+    /*! \ingroup findiff
+
+        \deprecated Use the new finite-differences framework instead.
+                     Deprecated in version 1.22.
+    */
+    QL_DEPRECATED
     typedef PdeOperator<PdeShortRate> OneFactorOperator;
 }
 

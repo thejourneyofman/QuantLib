@@ -34,9 +34,13 @@
 namespace QuantLib {
 
     //! Finite-differences pricing engine for American-style vanilla options
-    /*! \ingroup vanillaengines */
+    /*! \ingroup vanillaengines
+
+        \deprecated Use the new-style framework instead.
+                    Deprecated in version 1.22.
+    */
     template <template <class> class Scheme = CrankNicolson>
-    class FDStepConditionEngine :  public FDVanillaEngine {
+    class QL_DEPRECATED FDStepConditionEngine :  public FDVanillaEngine {
       public:
         FDStepConditionEngine(
              const ext::shared_ptr<GeneralizedBlackScholesProcess>& process,
