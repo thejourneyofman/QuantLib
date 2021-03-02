@@ -346,6 +346,9 @@
     <Filter Include="experimental\asian">
       <UniqueIdentifier>{0abb3851-b409-4ea6-8e55-120d00a9fcdb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="parallel">
+      <UniqueIdentifier>{205de003-f503-4ade-bfef-240e2ffab86e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ql\methods\all.hpp">
@@ -4373,6 +4376,15 @@
     <ClInclude Include="ql\methods\finitedifferences\utilities\fdmshoutloginnervaluecalculator.hpp">
       <Filter>methods\finitedifferences\utilities</Filter>
     </ClInclude>
+    <ClInclude Include="ql\parallel\Communicator.hpp">
+      <Filter>parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\parallel\Strategy.hpp">
+      <Filter>parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="ql\patterns\threaded_lazyobject.hpp">
+      <Filter>patterns</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ql\methods\montecarlo\brownianbridge.cpp">
@@ -7069,5 +7081,8 @@
     <ClCompile Include="ql\methods\finitedifferences\utilities\fdmshoutloginnervaluecalculator.cpp">
       <Filter>methods\finitedifferences\utilities</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

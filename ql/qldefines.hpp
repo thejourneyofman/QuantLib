@@ -40,9 +40,9 @@
 #if BOOST_VERSION < 104800
     #error using an old version of Boost, please update.
 #endif
-#if !defined(BOOST_ENABLE_ASSERT_HANDLER)
-    #define BOOST_ENABLE_ASSERT_HANDLER
-#endif
+//#if !defined(BOOST_ENABLE_ASSERT_HANDLER)
+//    #define BOOST_ENABLE_ASSERT_HANDLER
+//#endif
 
 /* This allows one to include a given file at this point by
    passing it as a compiler define (e.g., -DQL_INCLUDE_FIRST=foo.hpp).

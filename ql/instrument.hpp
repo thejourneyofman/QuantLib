@@ -25,13 +25,18 @@
 #ifndef quantlib_instrument_hpp
 #define quantlib_instrument_hpp
 
+#if defined(USE_MPI)
+#include <ql/patterns/threaded_lazyobject.hpp>
+#else
 #include <ql/patterns/lazyobject.hpp>
+#endif
 #include <ql/pricingengine.hpp>
 #include <ql/utilities/null.hpp>
 #include <ql/time/date.hpp>
 #include <boost/any.hpp>
 #include <map>
 #include <string>
+
 
 namespace QuantLib {
 
@@ -41,7 +46,11 @@ namespace QuantLib {
 
         \test observability of class instances is checked.
     */
+#if defined(USE_MPI)
+    class Instrument : public ThreadedLazyObject {
+#else
     class Instrument : public LazyObject {
+#endif
       public:
         class results;
         Instrument();
@@ -62,6 +71,8 @@ namespace QuantLib {
 
         //! returns whether the instrument might have value greater than zero.
         virtual bool isExpired() const = 0;
+
+        #if !defined(USE_MPI)
         //@}
         //! \name Modifiers
         //@{
@@ -71,6 +82,7 @@ namespace QuantLib {
                      was overridden in a derived class.
         */
         void setPricingEngine(const ext::shared_ptr<PricingEngine>&);
+        #endif
         //@}
         /*! When a derived argument structure is defined for an
             instrument, this method should be overridden to fill
@@ -82,6 +94,7 @@ namespace QuantLib {
             it. This is mandatory in case a pricing engine is used.
         */
         virtual void fetchResults(const PricingEngine::results*) const;
+
       protected:
         //! \name Calculations
         //@{
@@ -130,6 +143,7 @@ namespace QuantLib {
     : NPV_(Null<Real>()), errorEstimate_(Null<Real>()),
       valuationDate_(Date()) {}
 
+    #if !defined(USE_MPI)
     inline void Instrument::setPricingEngine(
                                   const ext::shared_ptr<PricingEngine>& e) {
         if (engine_ != nullptr)
@@ -140,6 +154,7 @@ namespace QuantLib {
         // trigger (lazy) recalculation and notify observers
         update();
     }
+    #endif
 
     inline void Instrument::setupArguments(PricingEngine::arguments*) const {
         QL_FAIL("Instrument::setupArguments() not implemented");
@@ -151,7 +166,11 @@ namespace QuantLib {
                 setupExpired();
                 calculated_ = true;
             } else {
+                #if defined(USE_MPI)
+                ThreadedLazyObject::calculate();
+                #else
                 LazyObject::calculate();
+                #endif
             }
         }
     }
@@ -162,6 +181,17 @@ namespace QuantLib {
         additionalResults_.clear();
     }
 
+    #if defined(USE_MPI)
+    inline void Instrument::performCalculations() const {
+        QL_REQUIRE(getEngine(), "null pricing engine");
+        getEngine()->reset();
+        setupArguments(getEngine()->getArguments());
+        getEngine()->getArguments()->validate();
+        getEngine()->calculate();
+        fetchResults(getEngine()->getResults());
+    }
+    #else
+
     inline void Instrument::performCalculations() const {
         QL_REQUIRE(engine_, "null pricing engine");
         engine_->reset();
@@ -170,6 +200,8 @@ namespace QuantLib {
         engine_->calculate();
         fetchResults(engine_->getResults());
     }
+
+    #endif
 
     inline void Instrument::fetchResults(
                                       const PricingEngine::results* r) const {
@@ -181,6 +213,12 @@ namespace QuantLib {
         valuationDate_ = results->valuationDate;
 
         additionalResults_ = results->additionalResults;
+
+        #if defined(USE_MPI)
+        COMM_FLOAT npv;
+        npv.value = NPV_;
+        getSlave()->notify(npv);
+        #endif
     }
 
     inline Real Instrument::NPV() const {
