@@ -64,9 +64,8 @@ Main processes will broadcast its signals to other processes and their threads.
 #### add the path of boost thread and MSMPI libraries to the project
 #### add "USE_MPI" to the preprocessors
 #### go to the file of userconfig.hpp, uncomment the following line
-```ifndef QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN
+```
 #    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN
-#endif
 ```
 
 ## Tools
