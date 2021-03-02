@@ -1,4 +1,4 @@
-Parallelized Quantlib (For test use)
+# Parallelized Quantlib (For test use)
 
 ## Motivation
 ### Challenged some ad-hoc way to make giant projects (in case of Quantlib, about half million LOC) work in a parallel computing style that supports both multiple processes and multiple threads by adding as little codes as possible.
@@ -20,7 +20,8 @@ std::cout << europeanOption->NPV() << std::endl;
 bermudanOption->setPricingEngine(binomialEngine);
 std::cout << bermudanOption->NPV() << std::endl;
 americanOption->setPricingEngine(mcEngine);
-std::cout << americanOption->NPV() << std::endl;```
+std::cout << americanOption->NPV() << std::endl;
+```
 
 In a new asynchronous mode, it works like
 
@@ -30,8 +31,9 @@ americanOption->setPricingEngine(mcEngine);
 portfolio->reset();
 portfolio->subscribeSignal(europeanOption);
 portfolio->subscribeSignal(bermudanOption);
-portfolio->subscribeSignal(americanOption);```
+portfolio->subscribeSignal(americanOption);
 portfolio->start();
+```
 
 ## Broadcast Strategies
 ### It supports three kinds of broadcasting strategies to communicate all the signals from different processes and threads.
