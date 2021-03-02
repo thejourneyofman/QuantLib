@@ -1,19 +1,19 @@
 # Parallelized Quantlib (For test use)
 
 ## Motivation
-### Challenged some ad-hoc way to make giant projects (in case of Quantlib, about half million LOC) work in a parallel computing style that supports both multiple processes and multiple threads by adding as little codes as possible.
+#### Challenged some ad-hoc way to make giant projects (in case of Quantlib, about half million LOC) work in a parallel computing style that supports both multiple processes and multiple threads by adding as little codes as possible.
 
 ## Restrictions
-### It's NOT an integral HPC version-up for Quantlib users but a test bed of the integrity and extensibility how a fulcrum can pry to a whole project. In this case, I added about 100-200 lines of code and started working from the base classes which are inherited by many top-level objects and functions.
+#### It's NOT an integral HPC version-up for Quantlib users but a test bed of the integrity and extensibility how a fulcrum can pry to a whole project. In this case, I added about 100-200 lines of code and started working from the base classes which are inherited by many top-level objects and functions.
 
 ## Features
-### For now it supports multiple threads in a particle size of Instrument, that is, one pricing engine (in some case it's bounded with a certain time-consuming stochastic process) works in an independent single thread for a single instrument.
-### Meanwhile, it provides a protocol to use MPI that can support multiple processes to manage the main thread and the instruments can be grouped to different processes in a in a particle size of "Portfolio" as to be a future work. 
+#### For now it supports multiple threads in a particle size of Instrument, that is, one pricing engine (in some case it's bounded with a certain time-consuming stochastic process) works in an independent single thread for a single instrument.
+#### Meanwhile, it provides a protocol to use MPI that can support multiple processes to manage the main thread and the instruments can be grouped to different processes in a in a particle size of "Portfolio" as to be a future work. 
 
 ## A use case (EquityOption)
-### You have a basket of options to be monitored and performed by calculations using different pricing engines for different option types. And each option may use different engines (BSM, Binomial, MC for an example) to compare the NPV or other indicators for the purpose of your strategy.
+#### You have a basket of options to be monitored and performed by calculations using different pricing engines for different option types. And each option may use different engines (BSM, Binomial, MC for an example) to compare the NPV or other indicators for the purpose of your strategy.
 
-### In its original synchronous mode, it works like
+#### In its original synchronous mode, it works like
 
 ```europeanOption->setPricingEngine(bsEngine);
 std::cout << europeanOption->NPV() << std::endl;
@@ -36,7 +36,7 @@ portfolio->start();
 ```
 
 ## Broadcast Strategies
-### It supports three kinds of broadcasting strategies to communicate all the signals from different processes and threads.
+#### It supports three kinds of broadcasting strategies to communicate all the signals from different processes and threads.
 #### allToAll
 All signals from each process and its threads will be broadcasted to all other processes (full connection).
 
@@ -56,17 +56,18 @@ Main processes will broadcast its signals to other processes and their threads.
 
 ## How to use it
 
-### go to the Solution Directory(where sln file is) \MSMPI\Bin
-### Run " .\mpiexec.exe -n [Number of Processes] Solution Directory\Examples\EquityOption\bin\EquityOption-x64-mt-gd.exe"
+#### go to the Solution Directory(where sln file is) \MSMPI\Bin
+#### Run " .\mpiexec.exe -n [Number of Processes] Solution Directory\Examples\EquityOption\bin\EquityOption-x64-mt-gd.exe"
 
 ## How to build it
-### Following the guidance of official site of Quanlib with some additional configuration,
+#### Following the guidance of official site of Quanlib with some additional configuration,
 #### add the path of boost thread and MSMPI libraries to the project
 #### add "USE_MPI" to the preprocessors
 #### go to the file of userconfig.hpp, uncomment the following line
-#ifndef QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN
+```ifndef QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN
 #    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN
 #endif
+```
 
 ## Tools
 #### -- Boost (http://www.boost.org)
