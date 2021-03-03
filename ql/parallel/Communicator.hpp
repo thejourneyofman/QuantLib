@@ -61,10 +61,9 @@ protected:
     template<typename ValueType>
     void broadcast(std::vector<ValueType>& values, unsigned int broadcaster) const
     {
-        unsigned int bsize = values.size();
-        values.resize(bsize);
-        MPI_Bcast(const_cast<ValueType*>(values.data()), bsize, mpi_type<ValueType>(),
-            broadcaster, Communicator::mpi());
+        values.resize(1);
+        MPI_Bcast(const_cast<ValueType*>(values.data()), 1, mpi_type<ValueType>(), broadcaster,
+                Communicator::mpi());
     }
 
     template<typename ValueType>
@@ -127,10 +126,10 @@ protected:
 
         MPI_Alltoallv(send_buff.data(), send_count.data(),
             send_disp.data(), mpi_type<ValueType>(),
-            unpacked_values.data(), recv_count.data(),
-            recv_disp.data(), mpi_type<ValueType>(), MPI_COMM_WORLD);
+            unpacked_values.data(), recv_count.data(), recv_disp.data(),
+                      mpi_type<ValueType>(), Communicator::mpi());
 
-        MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Barrier(Communicator::mpi());
     }
 
 private:

@@ -1,7 +1,7 @@
 # Parallelized Quantlib (For test use)
 
 ## Motivation
-#### Challeng an ad-hoc way to make giant projects (in case of Quantlib, about half million LOC) work in a parallel computing style that supports both multiple processes and multiple threads by adding as little codes as possible.
+#### Challenge an ad-hoc way to make giant projects (in case of Quantlib, about half million LOC) work in a parallel computing style that supports both multiple processes and multiple threads by adding as little codes as possible.
 
 ## Restrictions
 #### It's NOT an integral version-up for Quantlib users but a test bed of the integrity and extensibility of HPC how a fulcrum can pry to a whole project. In this case, I added about few hundreds of lines (less than 1% of the whole project) of code and started working from the base classes which are inherited by many top-level objects and functions.
@@ -50,8 +50,8 @@ Main processes will broadcast its signals to other processes and their threads.
 
 ## Objects/Classes Added
 #### ThreadedLazyObject (based on LazyObject), which manages the thread, signal and slot.
-#### ObjectWrapper, which handle the threading processes and errors.
-#### Strategy, which provide different modes of broadcasting between processes.
+#### ObjectWrapper, which handles the threading processes and errors.
+#### Strategy, which provides different modes of broadcasting between processes.
 #### Communicator, which is a simple wrapper of MPI.
 
 ## How to use it

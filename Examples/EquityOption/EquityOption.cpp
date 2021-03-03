@@ -55,7 +55,7 @@ class OptionWrapper : public ObjectWrapper {
   public:
     OptionWrapper(void (Strategy<COMM_FLOAT>::*func)(const COMM_FLOAT&) const)
     : ObjectWrapper(func) {}
-    OptionWrapper() : ObjectWrapper(&Strategy::gatherFromSlaves) {}
+    OptionWrapper() : ObjectWrapper(&Strategy::broadcastFromMaster) {}
 
     void takeall() { 
         //Not implemented
@@ -109,12 +109,21 @@ int main(int, char* []) {
         std::cout << std::endl ;
 
         // write column headings
+        #if defined(USE_MPI)
+        Size widths[] = {10, 10, 10, 10};
+        std::cout << std::setw(widths[0]) << std::left << "PID" 
+                  << std::setw(widths[1]) << std::left << "SID" 
+                  << std::setw(widths[2]) << std::left << "TYPE" 
+                  << std::setw(widths[3]) << std::left << "METHOD" 
+                  << std::endl;
+        #else
         Size widths[] = { 35, 14, 14, 14 };
         std::cout << std::setw(widths[0]) << std::left << "Method"
                   << std::setw(widths[1]) << std::left << "European"
                   << std::setw(widths[2]) << std::left << "Bermudan"
                   << std::setw(widths[3]) << std::left << "American"
                   << std::endl;
+        #endif
 
         std::vector<Date> exerciseDates;
         for (Integer i=1; i<=4; i++)
